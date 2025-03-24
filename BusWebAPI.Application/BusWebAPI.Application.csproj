@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\BusSeat\Commands\" />
+    <Folder Include="Services\BusSeat\Queries\" />
+    <Folder Include="Services\Route\Queries\" />
+    <Folder Include="Validations\BusSchedule\Queries\" />
+    <Folder Include="Validations\BusSeat\Commands\" />
+    <Folder Include="Validations\BusSeat\Queries\" />
+    <Folder Include="Validations\Route\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BusWebAPI.Domain\BusWebAPI.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
