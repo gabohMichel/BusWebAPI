@@ -3,35 +3,51 @@ using BusWebAPI.Domain.Common;
 using MediatR;
 using System.Net;
 using Newtonsoft.Json;
+using BusWebAPI.Application.Utility;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace BusWebAPI.Application.Services.User.Queries
 {
     public class UserLoginQuery : IRequestHandler<UserLoginRequestQuery, Response<UserLoginResponseQuery>>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IEncDecString _encDecString;
+        private readonly IConfiguration _configuration;
 
-        public UserLoginQuery(IUserRepository userRepository)
+        public UserLoginQuery(IUserRepository userRepository, IEncDecString encDecString, IConfiguration configuration)
         {
             _userRepository = userRepository;
+            _encDecString = encDecString;
+            _configuration = configuration;
         }
 
         public async Task<Response<UserLoginResponseQuery>> Handle(UserLoginRequestQuery request, CancellationToken cancellationToken)
         {
-            var a = await _userRepository.GetUsers();
-            if (!a.Any()) {
-                return new Response<UserLoginResponseQuery>()
-                {
-                    Success = false,
-                    Data = null,
-                    StatusCode = (short)HttpStatusCode.NoContent
-                };
-            }
+            var user = await _userRepository.GetUser(request.Username, _encDecString.EncString(request.Password));
+            if (user == null || user.Id == 0)
+                throw new Exception("Parameters not accepted");
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.UserData, user.Username),
+                new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "NonAdmin"),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("SigninKey").Value));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var tokenObj = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(1), signingCredentials: creds);
+            string tokenString = new JwtSecurityTokenHandler().WriteToken(tokenObj);
             return new Response<UserLoginResponseQuery>()
             {
-                Success = true,
-                Data = new UserLoginResponseQuery() { Token = JsonConvert.SerializeObject(a) },
-                StatusCode = (short)HttpStatusCode.OK,
-                Message = ""
+                StatusCode = 200,
+                Data = new UserLoginResponseQuery() { Token = tokenString }
             };
         }
     }

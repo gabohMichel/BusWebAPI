@@ -5,15 +5,18 @@ namespace BusWebAPI.Domain.Dto
     public class User
     {
         public int Id { get; set; }
-        public string? Username { get; set; }
+        public string Username { get; set; }
         public bool IsAdmin { get; set; }
-        public static implicit operator User(TabUser user)
+        public static explicit operator User(TabUser user)
         {
+            if (user == null)
+                return null;
+
             return new User()
             {
                 Id = user.Id,
-                Username = user.Username,
-                IsAdmin = user.IsAdmin
+                Username = user.UserName ?? string.Empty,
+                IsAdmin = user.IsAdmin ?? false
             };
         }
     }

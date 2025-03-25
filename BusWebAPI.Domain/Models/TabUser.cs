@@ -1,12 +1,14 @@
-﻿using BusWebAPI.Domain.Common;
+﻿namespace BusWebAPI.Domain.Models;
 
-namespace BusWebAPI.Domain.Models
+public partial class TabUser
 {
-    public class TabUser : IEntiryBase
-    {
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public bool IsAdmin { get; set; }
-    }
+    public int Id { get; set; }
+
+    public string? UserName { get; set; }
+
+    public string? Password { get; set; }
+
+    public bool? IsAdmin { get; set; }
+
+    public virtual ICollection<TabTicket> TabTicket { get; set; } = new List<TabTicket>();
 }

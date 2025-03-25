@@ -1,4 +1,4 @@
-﻿using BusWebAPI.Domain.Models;
+﻿using BusWebAPI.Domain.Models1;
 
 namespace BusWebAPI.Domain.Dto
 {

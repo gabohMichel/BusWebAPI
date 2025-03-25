@@ -1,4 +1,6 @@
-﻿using BusWebAPI.Application.Exceptions;
+﻿using BusWebAPI.Application.Contracts.Interfaces;
+using BusWebAPI.Application.Exceptions;
+using BusWebAPI.Domain.Common;
 using Newtonsoft.Json;
 using System.Net;
 
@@ -7,10 +9,16 @@ namespace BusWebAPI.Middlewares
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        public ExceptionMiddleware(RequestDelegate next)
+        private readonly Serilog.ILogger _logger;
+        private readonly IUserRepository _userRepository;
+
+        public ExceptionMiddleware(RequestDelegate next)//, Serilog.ILogger logger, IUserRepository userRepository)
         {
             _next = next;
+            //_logger = logger;
+            //_userRepository = userRepository;
         }
+
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -24,14 +32,34 @@ namespace BusWebAPI.Middlewares
                 var result = string.Empty;
                 switch (e)
                 {
+                    case NotFoundException:
+                        statusCode = (int)HttpStatusCode.NotFound;
+                        //_logger.Error("NotFoundException", e);
+                        break;
                     case ValidationException validationException:
                         statusCode = (int)HttpStatusCode.BadRequest;
-                        var validationJson = JsonConvert.SerializeObject(validationException.Errors);
-                        //result = JsonConvert.SerializeObject();
+                        result = JsonConvert.SerializeObject(new Response<IDictionary<string, string[]>>()
+                        {
+                            Message = e.Message,
+                            StatusCode = (short)statusCode,
+                            Success = false,
+                            Data = validationException.Errors
+                        });
+                        //_logger.Error("ValidationException", e);
+                        break;
+                    case BadRequestException:
+                        statusCode = (int)HttpStatusCode.BadRequest;
+                        //_logger.Error("BadRequestException", e);
+                        break;
+                    case ArgumentNullException:
+                        statusCode = (int)HttpStatusCode.BadRequest;
+                        //_logger.Error("ArgumentNullException", e);
                         break;
                     default:
+                        //_logger.Error("Exception", e);
                         break;
                 }
+                
                 context.Response.StatusCode = statusCode;
                 await context.Response.WriteAsync(result);
             }

@@ -4,7 +4,7 @@
     {
         public bool IsValid(object? val)
         {
-            if (val == null || val.ToString() == "")
+            if (val == null || val.ToString().Trim() == "")
                 return false;
 
             return true;
