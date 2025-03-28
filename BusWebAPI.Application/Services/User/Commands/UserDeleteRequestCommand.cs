@@ -1,7 +1,9 @@
-﻿namespace BusWebAPI.Application.Services.User.Commands
+﻿using MediatR;
+
+namespace BusWebAPI.Application.Services.User.Commands
 {
-    public class UserDeleteRequestCommand
+    public class UserDeleteRequestCommand : IRequest
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
     }
 }

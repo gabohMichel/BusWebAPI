@@ -5,11 +5,11 @@ namespace BusWebAPI.Application.Contracts.Interfaces
 {
     public interface IUserRepository : IDisposable
     {
-        Task<User> GetUser(int id);
-        Task<User> GetUser(string userName, string pwd);
-        Task<List<User>> GetUsers();
-        Task<User> CreateUser(TabUser user);
-        Task<User> UpdateUser(TabUser user);
-        Task<bool> DeleteUser(TabUser user);
+        Task<User> Get(int id);
+        Task<User> Get(string userName, string pwd);
+        Task<List<User>> GetList();
+        Task<User> Create(TabUser user);
+        Task<bool> Update(TabUser user);
+        Task<bool> Delete(int id);
     }
 }

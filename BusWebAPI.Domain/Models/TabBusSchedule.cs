@@ -13,6 +13,7 @@ public partial class TabBusSchedule
     public int? IdBus { get; set; }
 
     public int? IdRoute { get; set; }
+    public virtual TabBus? IdBusNavigation { get; set; }
 
     public virtual TabRoute? IdRouteNavigation { get; set; }
 

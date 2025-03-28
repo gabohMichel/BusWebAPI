@@ -2,6 +2,6 @@
 {
     public class NotFoundException : ApplicationException
     {
-        public NotFoundException(string name, object key) : base($"Entidad \"{name}\" ({key}) no encontrado.") { }
+        public NotFoundException(string name, object key) : base($"Entity \"{name}\" ({key}) was not found.") { }
     }
 }

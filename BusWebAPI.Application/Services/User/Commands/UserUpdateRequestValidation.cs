@@ -9,7 +9,9 @@ namespace BusWebAPI.Application.Services.User.Commands
         public UserUpdateRequestValidation(ICustomValidation customValidation)
         {
             _isNullOrEmpty = (IsNullOrEmpty)customValidation;
-            RuleFor(o => o.Password).Must(_isNullOrEmpty.IsValid).WithMessage("Field is required")
+            RuleFor(o => o.Username).Must(_isNullOrEmpty.IsValid).WithMessage("Field is required");
+            RuleFor(o => o.OldPassword).Must(_isNullOrEmpty.IsValid).WithMessage("Field is required");
+            RuleFor(o => o.NewPassword).Must(_isNullOrEmpty.IsValid).WithMessage("Field is required")
                 .MinimumLength(12)
                 .Matches("[A-Z]").WithMessage("Field must contain one or more capital letters.")
                 .Matches("[a-z]").WithMessage("Field must contain one or more lowercase letters.")

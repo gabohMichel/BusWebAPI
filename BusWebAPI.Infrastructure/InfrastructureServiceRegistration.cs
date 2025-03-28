@@ -1,5 +1,4 @@
 ﻿using BusWebAPI.Application.Contracts.Interfaces;
-using BusWebAPI.Infrastructure.Context1;
 using BusWebAPI.Infrastructure.DbContexts;
 using BusWebAPI.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +15,12 @@ public static class InfrastructureServiceRegistration
           options.UseSqlServer(configuration.GetConnectionString("BusDB"))
         );
 
-        //services.AddSingleton<DbContext>();
         services.AddScoped<IUserRepository, UserRepository>();
-        //services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));
+        services.AddScoped<IBusRepository, BusRepository>();
+        services.AddScoped<IRouteRepository, RouteRepository>();
+        services.AddScoped<IBusScheduleRepository, BusScheduleRepository>();
+        services.AddScoped<ICategoryBusRepository, CategoryBusRepository>();
+        services.AddScoped<IStatusBusRepository, StatusBusRepository>();
 
         return services;
 

@@ -76,6 +76,10 @@ public partial class BusDBContext : DbContext
             entity.Property(e => e.ArrivingTime).HasColumnType("datetime");
             entity.Property(e => e.DepartureTime).HasColumnType("datetime");
 
+            entity.HasOne(d => d.IdBusNavigation).WithMany(p => p.TabBusSchedule)
+                .HasForeignKey(d => d.IdBus)
+                .HasConstraintName("FK_TabBusSchedule_TabBus");
+
             entity.HasOne(d => d.IdRouteNavigation).WithMany(p => p.TabBusSchedule)
                 .HasForeignKey(d => d.IdRoute)
                 .HasConstraintName("FK__TabBusSch__IdRou__403A8C7D");

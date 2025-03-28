@@ -7,13 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\BusSeat\Commands\" />
-    <Folder Include="Services\BusSeat\Queries\" />
-    <Folder Include="Services\Route\Queries\" />
-    <Folder Include="Validations\BusSchedule\Queries\" />
-    <Folder Include="Validations\BusSeat\Commands\" />
-    <Folder Include="Validations\BusSeat\Queries\" />
-    <Folder Include="Validations\Route\Queries\" />
+    <Compile Remove="Services\BusSeat\**" />
+    <EmbeddedResource Remove="Services\BusSeat\**" />
+    <None Remove="Services\BusSeat\**" />
   </ItemGroup>
 
   <ItemGroup>

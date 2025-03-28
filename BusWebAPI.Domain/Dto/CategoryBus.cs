@@ -1,4 +1,4 @@
-﻿using BusWebAPI.Domain.Models1;
+﻿using BusWebAPI.Domain.Models;
 
 namespace BusWebAPI.Domain.Dto
 {
@@ -6,7 +6,7 @@ namespace BusWebAPI.Domain.Dto
     {
         public int Id { get; set; }
         public string? Label { get; set; }
-        public static implicit operator CategoryBus(CatCategoryBus catCategoryBus)
+        public static explicit operator CategoryBus(CatCategory catCategoryBus)
         {
             return new CategoryBus { Id = catCategoryBus.Id, Label = catCategoryBus.Label };
         }

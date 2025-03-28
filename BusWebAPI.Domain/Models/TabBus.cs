@@ -15,4 +15,5 @@ public partial class TabBus
     public virtual CatCategory? IdCategoryNavigation { get; set; }
 
     public virtual CatStatusBus? IdStatusBusNavigation { get; set; }
+    public virtual ICollection<TabBusSchedule> TabBusSchedule { get; set; } = new List<TabBusSchedule>();
 }

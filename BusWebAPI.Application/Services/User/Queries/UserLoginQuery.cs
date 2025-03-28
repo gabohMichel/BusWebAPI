@@ -1,16 +1,13 @@
 ﻿using BusWebAPI.Application.Contracts.Interfaces;
 using BusWebAPI.Domain.Common;
 using MediatR;
-using System.Net;
-using Newtonsoft.Json;
 using BusWebAPI.Application.Utility;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Newtonsoft.Json.Linq;
+using BusWebAPI.Application.Exceptions;
 
 namespace BusWebAPI.Application.Services.User.Queries
 {
@@ -29,9 +26,9 @@ namespace BusWebAPI.Application.Services.User.Queries
 
         public async Task<Response<UserLoginResponseQuery>> Handle(UserLoginRequestQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUser(request.Username, _encDecString.EncString(request.Password));
+            var user = await _userRepository.Get(request.Username, _encDecString.EncString(request.Password));
             if (user == null || user.Id == 0)
-                throw new Exception("Parameters not accepted");
+                throw new BadRequestException("Parameters not accepted");
 
             var claims = new[]
             {

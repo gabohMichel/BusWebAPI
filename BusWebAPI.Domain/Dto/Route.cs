@@ -1,4 +1,4 @@
-﻿using BusWebAPI.Domain.Models1;
+﻿using BusWebAPI.Domain.Models;
 
 namespace BusWebAPI.Domain.Dto
 {
@@ -7,10 +7,10 @@ namespace BusWebAPI.Domain.Dto
         public int Id { get; set; }
         public string? DeparturePoint { get; set; }
         public string? ArrivingPoint { get; set; }
-        public float Distance { get; set; }
-        public static implicit operator Route(TabRoute route)
+        public decimal Distance { get; set; }
+        public static explicit operator Route(TabRoute route)
         {
-            return new Route { Id = route.Id, DeparturePoint = route.DeparturePoint, ArrivingPoint = route.ArrivingPoint, Distance = route.Distance };
+            return new Route { Id = route.Id, DeparturePoint = route.DeparturePoint, ArrivingPoint = route.ArrivingPoint, Distance = (decimal)route.Distance };
         }
     }
 }

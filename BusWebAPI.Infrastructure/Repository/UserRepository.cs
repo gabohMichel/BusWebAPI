@@ -19,42 +19,38 @@ namespace BusWebAPI.Infrastructure.Repository
             GC.SuppressFinalize(this);
             GC.Collect();
         }
-        public async Task<User> GetUser(int id)
+        public async Task<User> Get(int id)
         {
             return (User)await _busDbContext.TabUser.FindAsync(id);
         }
-        public async Task<List<User>> GetUsers()
+        public async Task<List<User>> GetList()
         {
             return await _busDbContext.TabUser.Select(o => (User)o).ToListAsync();
         }
-        public async Task<User> GetUser(string userName, string pwd)
+        public async Task<User> Get(string userName, string pwd)
         {
             var u = await _busDbContext.TabUser.Where(o => o.UserName == userName && o.Password == pwd).FirstOrDefaultAsync();
             return (User)u;
         }
-        public async Task<User> CreateUser(TabUser user)
+        public async Task<User> Create(TabUser user)
         {
             var o = await _busDbContext.TabUser.AddAsync(user);
             _busDbContext.SaveChanges();
 
             return (User)o.Entity;
         }
-        public async Task<User> UpdateUser(TabUser user)
+        public async Task<bool> Update(TabUser user)
         {
             var rowsAffected = await _busDbContext.TabUser.Where(o => o.Id == user.Id)
                 .ExecuteUpdateAsync(setters => setters.SetProperty(o => o.Password, user.Password));
-            //var rowsAffected = _busDbContext.SaveChanges();
-            if (rowsAffected == 0)
-                return null;
-            return (User)user;
+            
+            return rowsAffected > 0;
         }
-        public async Task<bool> DeleteUser(TabUser user)
+        public async Task<bool> Delete(int id)
         {
-            var rowsAffected = await _busDbContext.TabUser.Where(o => o.Id == user.Id)
+            var rowsAffected = await _busDbContext.TabUser.Where(o => o.Id == id)
                 .ExecuteDeleteAsync();
-            if (rowsAffected == 0)
-                return false;
-            return true;
+            return rowsAffected > 0;
         }
     }
 }

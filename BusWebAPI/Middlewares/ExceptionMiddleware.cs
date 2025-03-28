@@ -34,6 +34,12 @@ namespace BusWebAPI.Middlewares
                 {
                     case NotFoundException:
                         statusCode = (int)HttpStatusCode.NotFound;
+                        result = JsonConvert.SerializeObject(new Response<IDictionary<string, string[]>>()
+                        {
+                            Message = e.Message,
+                            StatusCode = (short)statusCode,
+                            Success = false,
+                        });
                         //_logger.Error("NotFoundException", e);
                         break;
                     case ValidationException validationException:
@@ -49,10 +55,22 @@ namespace BusWebAPI.Middlewares
                         break;
                     case BadRequestException:
                         statusCode = (int)HttpStatusCode.BadRequest;
+                        result = JsonConvert.SerializeObject(new Response<string>()
+                        {
+                            StatusCode = (short)statusCode,
+                            Success = false,
+                            Message = e.Message,
+                        });
                         //_logger.Error("BadRequestException", e);
                         break;
                     case ArgumentNullException:
                         statusCode = (int)HttpStatusCode.BadRequest;
+                        result = JsonConvert.SerializeObject(new Response<string>()
+                        {
+                            StatusCode = (short)statusCode,
+                            Success = false,
+                            Message = e.Message,
+                        });
                         //_logger.Error("ArgumentNullException", e);
                         break;
                     default:

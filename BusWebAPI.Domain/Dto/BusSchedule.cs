@@ -1,4 +1,4 @@
-﻿using BusWebAPI.Domain.Models1;
+﻿using BusWebAPI.Domain.Models;
 
 namespace BusWebAPI.Domain.Dto
 {
@@ -9,17 +9,22 @@ namespace BusWebAPI.Domain.Dto
         public DateTime ArrivingTime { get; set; }
         public bool IsAvailable { get; set; }
         public int IdBus { get; set; }
+        public string? BusPlates {  get; set; }
+        public string? BusCategory {  get; set; }
         public int IdRoute { get; set; }
-        public static implicit operator BusSchedule(TabBusSchedule busSchedule)
+        public string? DeparturePoint { get; set; }
+        public string? ArrivingPoint { get; set; }
+
+        public static explicit operator BusSchedule(TabBusSchedule busSchedule)
         {
             return new BusSchedule
             {
                 Id = busSchedule.Id,
-                ArrivingTime = busSchedule.ArrivingTime,
-                DepartureTime = busSchedule.DepartureTime,
-                IdBus = busSchedule.IdBus,
-                IdRoute = busSchedule.IdRoute,
-                IsAvailable = busSchedule.IsAvailable
+                ArrivingTime = (DateTime)busSchedule.ArrivingTime,
+                DepartureTime = (DateTime)busSchedule.DepartureTime,
+                IdBus = (int)busSchedule.IdBus,
+                IdRoute = (int)busSchedule.IdRoute,
+                IsAvailable = (bool)busSchedule.IsAvailable
             };
         }
     }

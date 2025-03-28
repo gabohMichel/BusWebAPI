@@ -27,5 +27,16 @@ namespace BusWebAPI.Controllers
         {
             await _mediator.Send(request);
         }
+        [HttpPut("password")]
+        public async Task UpdatePasswordUser([FromBody]UserUpdateRequestCommand request)
+        {
+            await _mediator.Send(request);
+        }
+        [HttpDelete("{Id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task DeleteUser([FromRoute] UserDeleteRequestCommand request)
+        {
+            await _mediator.Send(request);
+        }
     }
 }

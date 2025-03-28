@@ -1,4 +1,4 @@
-﻿using BusWebAPI.Domain.Models1;
+﻿using BusWebAPI.Domain.Models;
 
 namespace BusWebAPI.Domain.Dto
 {
@@ -6,12 +6,23 @@ namespace BusWebAPI.Domain.Dto
     {
         public int Id { get; set; }
         public string? Plate { get; set; }
-        public int Capacity { get; set; }
-        public int IdStatus { get; set; }
-        public int IdCategory { get; set; }
-        public static implicit operator Bus(TabBus bus)
+        public int? Capacity { get; set; }
+        public int? IdStatus { get; set; }
+        public string? Status { get; set; }
+        public int? IdCategory { get; set; }
+        public string? Category { get; set; }
+        public static explicit operator Bus(TabBus bus)
         {
-            return new Bus { Id = bus.Id, Plate = bus.Plate, Capacity = bus.Capacity, IdStatus = bus.IdStatus, IdCategory = bus.IdCategory };
+            return new Bus 
+            { 
+                Id = bus.Id, 
+                Plate = bus.Plates, 
+                Capacity = bus.Capacity, 
+                IdStatus = bus.IdStatusBus, 
+                Status = bus.IdStatusBusNavigation?.Label,
+                IdCategory = bus.IdCategory,
+                Category = bus.IdCategoryNavigation?.Label
+            };
         }
     }
 }
